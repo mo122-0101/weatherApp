@@ -6,7 +6,7 @@ import '../provider/weather_provider.dart';
 import '../service/weather_service.dart';
 
 class SearchPage extends StatelessWidget {
-  String? cityName;
+ late String cityName;
   SearchPage({this.updateUi});
   VoidCallback? updateUi;
 
@@ -22,20 +22,35 @@ class SearchPage extends StatelessWidget {
             horizontal: 16,
           ),
           child: TextField(
+            onChanged: (data){
+              this.cityName=data;
+            },
             onSubmitted: (data) async {
+              this.cityName=data;
               WeatherService service = WeatherService();
               WeatherModel weather =
-                  await service.getWeather(cityName: cityName??'');
+                  await service.getWeather(cityName: cityName);
               Provider.of<WeatherProvider>(context, listen: false).weatherData =
                   weather;
-              updateUi!();
+            //  updateUi!();
               Navigator.pop(context);
             },
             decoration: InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 32, horizontal: 24),
               label: Text('search'),
-              suffixIcon: Icon(Icons.search),
+              suffixIcon:
+              GestureDetector(
+                  onTap: ()async
+                  {
+                    WeatherService service = WeatherService();
+                    WeatherModel weather =
+                    await service.getWeather(cityName: cityName);
+                    Provider.of<WeatherProvider>(context, listen: false).weatherData =
+                        weather;
+                    Navigator.pop(context);
+                  },
+                  child: Icon(Icons.search)),
               border: OutlineInputBorder(),
               hintText: 'Enter a City',
             ),

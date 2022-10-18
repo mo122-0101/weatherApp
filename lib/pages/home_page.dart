@@ -59,19 +59,31 @@ class _HomePageState extends State<HomePage> {
         ),
       ):
       Container(
-        color: Colors.orange,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              weatherData.getThemeColor(),
+              weatherData.getThemeColor()[300]!,
+              weatherData.getThemeColor()[100]!,
+
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          )
+        ),
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
           const  Spacer(flex: 3,),
             Text(
-            Provider.of<WeatherProvider>(context).cityName!,
+            weatherData.cityName!,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
             fontSize: 32,
               ),),
             Text(
-              'updated: 12-8-2020',
+             'updated at : ${weatherData.date.hour.toString()}:${weatherData.date.minute.toString()} ',
               style: TextStyle(
                 fontSize: 22,
               ),),
